@@ -1,13 +1,13 @@
 use std::{
     collections::HashMap,
     fs::File,
-    io::{self, BufRead},
+    io::{BufRead, BufReader},
 };
 
 fn parser(file: &File) -> (Vec<i32>, Vec<i32>) {
     let mut data: (Vec<i32>, Vec<i32>) = (vec![], vec![]);
 
-    let mut reader = io::BufReader::new(file);
+    let mut reader = BufReader::new(file);
     let mut line = String::new();
     while let Ok(bytes_read) = reader.read_line(&mut line) {
         if bytes_read == 0 {
@@ -49,6 +49,9 @@ pub fn part2(file: &File) {
         *map.entry(*elem).or_insert(0) += 1;
     });
 
-    let sum = data.0.iter().fold(0, |acc, x| acc + *x * *map.entry(*x).or_default());
+    let sum = data
+        .0
+        .iter()
+        .fold(0, |acc, x| acc + *x * *map.entry(*x).or_default());
     println!("{}", sum);
 }
